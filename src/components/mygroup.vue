@@ -11,13 +11,13 @@ import frame from "./frame.vue";
 Vue.use(qs);
 
 export default {
-  name: "index",
+  name: "mygroup",
   components: {
     frame
   },
   data() {
     return {
-      pagetitle:"个人信息",
+      pagetitle:"我的文件组",
     };
   },
   methods: {}

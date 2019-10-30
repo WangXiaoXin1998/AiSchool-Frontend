@@ -36,7 +36,7 @@
           </el-form>
         </div>
 
-        <div class="form1" v-if="step==1">
+        <div class="form1" v-show="step==1">
           <el-form
             hide-required-asterisk="true"
             :model="pwdform1"
@@ -58,7 +58,7 @@
           </el-form>
         </div>
 
-        <div class="form2" v-if="step==2">
+        <div class="form2" v-show="step==2">
           <el-form
             hide-required-asterisk="true"
             :model="pwdform2"
@@ -68,7 +68,7 @@
             label-width="140px"
             class="demo-ruleForm"
           >
-            <el-form-item label="新密码" size="medium" prop="password" autocomplete="off">
+            <el-form-item label="新密码" size="medium" prop="newpwd" autocomplete="off">
               <el-input
                 type="password"
                 v-model="pwdform2.newpwd"
@@ -77,7 +77,7 @@
                 show-password
               ></el-input>
             </el-form-item>
-            <el-form-item label="再输一次" size="medium" prop="password" autocomplete="off">
+            <el-form-item label="再输一次" size="medium" prop="agapwd" autocomplete="off">
               <el-input
                 type="password"
                 v-model="pwdform2.agapwd"
@@ -89,9 +89,12 @@
           </el-form>
         </div>
 
-        <div class="form3" v-if="step==3">
+        <div class="form3" v-show="step==3">
           <br />密码重置成功
-          <div class="des">3秒后跳转至<el-button type="text" @click="relogin()">登录</el-button>界面</div>
+          <div class="des">
+            3秒后跳转至
+            <el-button type="text" @click="relogin()">登录</el-button>界面
+          </div>
         </div>
 
         <div class="button" v-if="step<3">
@@ -106,11 +109,30 @@
 <script>
 import Vue from "vue";
 import bglizi from "./bglizi.vue";
+import qs from "qs";
 Vue.component("bglizi", bglizi);
+Vue.use(qs);
 
 export default {
   name: "forgetpwd",
   data() {
+    var validatePass1 = (rule, value, callback) => {
+      var reg = /^[0-9A-Za-z]{6,20}$/;
+      if (!reg.test(value)) {
+        callback(new Error("密码必须为6-20位的数字或字母"));
+      } else {
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.pwdform2.newpwd) {
+        callback(new Error("两次输入密码不一致"));
+      } else {
+        callback();
+      }
+    };
     return {
       step: 0,
       pwdform0: {
@@ -118,14 +140,15 @@ export default {
         character: "用户"
       },
       pwdform1: {
-        question1: "11111？",
-        question2: "22222？",
-        question3: "33333？",
+        question1: "",
+        question2: "",
+        question3: "",
         answer1: "",
         answer2: "",
         answer3: ""
       },
       pwdform2: {
+        token: "",
         newpwd: "",
         agapwd: ""
       },
@@ -142,69 +165,98 @@ export default {
         ],
         answer3: [
           { required: true, message: "请输入问题答案", trigger: "blur" }
-        ]
+        ],
+        newpwd: [{ required: true, validator: validatePass1, trigger: "blur" }],
+        agapwd: [{ required: true, validator: validatePass2, trigger: "blur" }]
       }
     };
   },
   methods: {
     submit(formName) {
-      if(this.step==2){
-          setTimeout(() => {
-            this.relogin()
-          }, 3000);
+      if (this.step == 2) {
+        setTimeout(() => {
+          this.relogin();
+        }, 3000);
       }
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.step = this.step + 1;
-          this.pwdform.answer1 = "";
-          this.pwdform.answer2 = "";
-          this.pwdform.answer3 = "";
-        }
-      });
-      return;
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          var pwdform = {
-            username: this.pwdform.username,
-            password: this.pwdform.password
-          };
-          this.$axios
-            .post("/api/user/login.do", qs.stringify(loginform), {})
-            .then(res => {
-              console.log(res);
-              localStorage.clear();
-              sessionStorage.clear();
-              const token = res.data.token;
-              const User = res.data.user;
-            })
-            .catch(error => {
-              if (error.response.hasOwnProperty("status")) {
-                switch (error.response.status) {
-                  case 400:
-                    this.$notify("登录失败：账号不存在");
-                    break;
-                  case 401:
-                    this.$notify("登录失败：账号或密码错误");
-                    break;
-                  case 403:
-                    this.$notify("登录失败：该账号已被禁止登陆");
-                    break;
-                  case 404:
-                    this.$notify("登录失败：账号不存在");
-                    break;
-                  case 500:
-                    this.$notify("登录失败：服务器内部错误");
-                    break;
-                  default:
-                    this.$notify("登录失败：服务器未知异常");
+          if (this.step == 0) {
+            var pwdform = {
+              username: this.pwdform0.username
+            };
+            this.$axios
+              .post(
+                "/api/user/forget_get_question.do",
+                qs.stringify(pwdform),
+                {}
+              )
+              .then(res => {
+                if (res.data.status == 1) {
+                  this.$message.error("验证失败：" + res.data.msg);
+                  return;
                 }
-                this.changestate(false);
+                var question = res.data.msg.split("#")
+                this.pwdform1.question1 = question[0]
+                this.pwdform1.question2 = question[1]
+                this.pwdform1.question3 = question[2]
+                this.step = this.step + 1;
+              })
+              .catch(error => {
+                console.log(error)
+                this.$message.error("验证失败：服务器未知异常");
                 return;
-              } else {
-                this.$notify("登录失败：服务器通信异常");
-                this.changestate(false);
-              }
-            });
+              });
+          }
+          else if (this.step == 1) {
+            var pwdform = {
+              username: this.pwdform0.username,
+              question: this.pwdform1.question1+'#'+this.pwdform1.question2+'#'+this.pwdform1.question3,
+              answer: this.pwdform1.answer1+'#'+this.pwdform1.answer2+'#'+this.pwdform1.answer3
+            };
+            this.$axios
+              .post(
+                "/api/user/forget_check_answer.do",
+                qs.stringify(pwdform),
+                {}
+              )
+              .then(res => {
+                if (res.data.status == 1) {
+                  this.$message.error("验证失败：" + res.data.msg);
+                  return;
+                }
+                console.log(res)
+                this.pwdform2.token = res.data.msg
+                this.step = this.step + 1;
+              })
+              .catch(error => {
+                this.$message.error("验证失败：服务器未知异常");
+                return;
+              });
+          }
+          else if (this.step == 2) {
+            var pwdform = {
+              username: this.pwdform0.username,
+              forgetToken: this.pwdform2.token,
+              passwordNew: this.pwdform2.agapwd,
+            };
+            this.$axios
+              .post(
+                "/api/user/forget_reset_password.do",
+                qs.stringify(pwdform),
+                {}
+              )
+              .then(res => {
+                if (res.data.status == 1) {
+                  this.$message.error("重置失败：" + res.data.msg);
+                  return;
+                }
+                this.step = this.step + 1;
+              })
+              .catch(error => {
+                this.$message.error("重置失败：服务器未知异常");
+                return;
+              });
+          }
         }
       });
     },
@@ -212,7 +264,7 @@ export default {
       this.$refs[formName].resetFields();
     },
     relogin() {
-      this.$router.push("../login");
+      this.$router.push("login");
     }
   }
 };

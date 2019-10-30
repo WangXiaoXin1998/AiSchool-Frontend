@@ -30,14 +30,14 @@
               show-password
             ></el-input>
           </el-form-item>
-          <el-form-item label="类型" prop="character">
+          <!-- <el-form-item label="类型" prop="character">
             <center>
               <el-radio-group v-model="loginform.character" class="chooseType">
                 <el-radio label="用户"></el-radio>
                 <el-radio label="管理员"></el-radio>
               </el-radio-group>
             </center>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
         <center>
           <el-button type="primary" @click="submitForm('loginform')">登录</el-button>
@@ -51,7 +51,9 @@
 <script>
 import Vue from "vue";
 import bglizi from "./bglizi.vue";
+import qs from 'qs';
 Vue.component("bglizi", bglizi);
+Vue.use(qs);
 
 export default {
   name: "login",
@@ -60,7 +62,7 @@ export default {
       loginform: {
         username: "",
         password: "",
-        character: "用户"
+        // character: "用户"
       },
       rules: {
         username: [
@@ -82,39 +84,19 @@ export default {
           this.$axios
             .post("/api/user/login.do", qs.stringify(loginform), {})
             .then(res => {
-              console.log(res);
+              if (res.data.status == 1) {
+                this.$message.error("登录失败：" + res.data.msg);
+                return;
+              }
+              console.log(res)
               localStorage.clear();
-              sessionStorage.clear();
-              const token = res.data.token;
-              const User = res.data.user;
+              localStorage.setItem('token', res.data.msg)
+							localStorage.setItem('username', loginform.password)
+              localStorage.setItem('role', res.data.data)
+              this.$router.push("index")
             })
             .catch(error => {
-              if (error.response.hasOwnProperty("status")) {
-                switch (error.response.status) {
-                  case 400:
-                    this.$notify("登录失败：账号不存在");
-                    break;
-                  case 401:
-                    this.$notify("登录失败：账号或密码错误");
-                    break;
-                  case 403:
-                    this.$notify("登录失败：该账号已被禁止登陆");
-                    break;
-                  case 404:
-                    this.$notify("登录失败：账号不存在");
-                    break;
-                  case 500:
-                    this.$notify("登录失败：服务器内部错误");
-                    break;
-                  default:
-                    this.$notify("登录失败：服务器未知异常");
-                }
-                this.changestate(false);
-                return;
-              } else {
-                this.$notify("登录失败：服务器通信异常");
-                this.changestate(false);
-              }
+              this.$message.error("登录失败：服务器未知异常");
             });
         }
       });
@@ -123,7 +105,7 @@ export default {
       this.$refs[formName].resetFields();
     },
     forgetpwd() {
-      this.$router.push("../forgetpwd");
+      this.$router.push("forgetpwd");
     }
   }
 };

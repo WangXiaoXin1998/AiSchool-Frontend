@@ -37,7 +37,7 @@
                 <el-radio label="管理员"></el-radio>
               </el-radio-group>
             </center>
-          </el-form-item> -->
+          </el-form-item>-->
         </el-form>
         <center>
           <el-button type="primary" @click="submitForm('loginform')">登录</el-button>
@@ -51,7 +51,7 @@
 <script>
 import Vue from "vue";
 import bglizi from "./bglizi.vue";
-import qs from 'qs';
+import qs from "qs";
 Vue.component("bglizi", bglizi);
 Vue.use(qs);
 
@@ -61,7 +61,7 @@ export default {
     return {
       loginform: {
         username: "",
-        password: "",
+        password: ""
         // character: "用户"
       },
       rules: {
@@ -91,12 +91,12 @@ export default {
               console.log(res)
               localStorage.clear();
               localStorage.setItem('token', res.data.msg)
-							localStorage.setItem('username', loginform.password)
+          		localStorage.setItem('username', loginform.password)
               localStorage.setItem('role', res.data.data)
               this.$router.push("index")
             })
             .catch(error => {
-              this.$message.error("登录失败：服务器未知异常");
+              this.$message.error("登录失败：服务器连接超时");
             });
         }
       });

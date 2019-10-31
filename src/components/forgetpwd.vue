@@ -195,23 +195,31 @@ export default {
                   this.$message.error("验证失败：" + res.data.msg);
                   return;
                 }
-                var question = res.data.msg.split("#")
-                this.pwdform1.question1 = question[0]
-                this.pwdform1.question2 = question[1]
-                this.pwdform1.question3 = question[2]
+                var question = res.data.msg.split("#");
+                this.pwdform1.question1 = question[0];
+                this.pwdform1.question2 = question[1];
+                this.pwdform1.question3 = question[2];
                 this.step = this.step + 1;
               })
               .catch(error => {
-                console.log(error)
-                this.$message.error("验证失败：服务器未知异常");
+                this.$message.error("验证失败：服务器连接超时");
                 return;
               });
-          }
-          else if (this.step == 1) {
+          } else if (this.step == 1) {
             var pwdform = {
               username: this.pwdform0.username,
-              question: this.pwdform1.question1+'#'+this.pwdform1.question2+'#'+this.pwdform1.question3,
-              answer: this.pwdform1.answer1+'#'+this.pwdform1.answer2+'#'+this.pwdform1.answer3
+              question:
+                this.pwdform1.question1 +
+                "#" +
+                this.pwdform1.question2 +
+                "#" +
+                this.pwdform1.question3,
+              answer:
+                this.pwdform1.answer1 +
+                "#" +
+                this.pwdform1.answer2 +
+                "#" +
+                this.pwdform1.answer3
             };
             this.$axios
               .post(
@@ -224,20 +232,19 @@ export default {
                   this.$message.error("验证失败：" + res.data.msg);
                   return;
                 }
-                console.log(res)
-                this.pwdform2.token = res.data.msg
+                console.log(res);
+                this.pwdform2.token = res.data.msg;
                 this.step = this.step + 1;
               })
               .catch(error => {
-                this.$message.error("验证失败：服务器未知异常");
+                this.$message.error("验证失败：服务器连接超时");
                 return;
               });
-          }
-          else if (this.step == 2) {
+          } else if (this.step == 2) {
             var pwdform = {
               username: this.pwdform0.username,
               forgetToken: this.pwdform2.token,
-              passwordNew: this.pwdform2.agapwd,
+              passwordNew: this.pwdform2.agapwd
             };
             this.$axios
               .post(
@@ -253,7 +260,7 @@ export default {
                 this.step = this.step + 1;
               })
               .catch(error => {
-                this.$message.error("重置失败：服务器未知异常");
+                this.$message.error("重置失败：服务器连接超时");
                 return;
               });
           }

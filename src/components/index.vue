@@ -1,26 +1,30 @@
 <template>
-  <div id="control">
-    <frame v-bind:pagetitle="pagetitle"></frame>
+  <div>
+    <Frame :pagetitle="pagetitle" :token="token">aaa</Frame>
   </div>
 </template>
 
 <script>
 import Vue from "vue";
 import qs from "qs";
-import frame from "./frame.vue";
+import Frame from "./frame.vue";
+Vue.component("Frame", Frame);
 Vue.use(qs);
 
 export default {
   name: "index",
-  components: {
-    frame
-  },
   data() {
     return {
-      pagetitle:"个人信息",
+      pagetitle: "个人信息",
+      token: ""
     };
   },
-  methods: {}
+  methods: {
+    getdata() {}
+  },
+  mounted() {
+    this.getdata();
+  }
 };
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div id="control">
-    <frame v-bind:pagetitle="pagetitle"></frame>
+    <Frame v-bind:pagetitle="pagetitle"></Frame>
   </div>
 </template>
 
@@ -8,13 +8,11 @@
 import Vue from "vue";
 import qs from "qs";
 import frame from "./frame.vue";
+Vue.component("Frame",frame)
 Vue.use(qs);
 
 export default {
   name: "mytask",
-  components: {
-    frame
-  },
   data() {
     return {
       pagetitle:"我的任务",

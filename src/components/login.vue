@@ -88,7 +88,6 @@ export default {
                 this.$message.error("登录失败：" + res.data.msg);
                 return;
               }
-              console.log(res)
               localStorage.clear();
               localStorage.setItem('token', res.data.msg)
           		localStorage.setItem('username', loginform.password)

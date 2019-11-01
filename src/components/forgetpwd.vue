@@ -16,7 +16,7 @@
         </el-steps>
         <div class="form0" v-if="step==0">
           <el-form
-            hide-required-asterisk="true"
+            hide-required-asterisk
             :model="pwdform0"
             status-icon
             :rules="rules"
@@ -38,7 +38,7 @@
 
         <div class="form1" v-show="step==1">
           <el-form
-            hide-required-asterisk="true"
+            hide-required-asterisk
             :model="pwdform1"
             status-icon
             :rules="rules"
@@ -60,7 +60,7 @@
 
         <div class="form2" v-show="step==2">
           <el-form
-            hide-required-asterisk="true"
+            hide-required-asterisk
             :model="pwdform2"
             status-icon
             :rules="rules"

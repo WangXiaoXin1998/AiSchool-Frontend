@@ -1,6 +1,8 @@
 <template>
   <div>
     <Frame :pagetitle="pagetitle">
+      <br />
+      <br />
       <el-row style="min-width:1000px">
         <el-col :span="3">
           <br />
@@ -77,9 +79,9 @@ export default {
             this.$message.error("获取失败：" + res.data.msg);
             return;
           }
-          this.user.username=res.data.data.username;
-          this.user.group=res.data.data.group;
-          this.user.mission=res.data.data.mission;
+          this.user.username = res.data.data.username;
+          this.user.group = res.data.data.group;
+          this.user.mission = res.data.data.mission;
         })
         .catch(error => {
           this.$message.error("获取失败：服务器连接超时");

@@ -4,12 +4,12 @@
       <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
         <el-tab-pane label="密码修改" name="revisePWD">
           <el-form
-            hide-required-asterisk="true"
+            hide-required-asterisk
             :model="reviseForm"
             status-icon
             :rules="rules"
             ref="reviseForm"
-            label-width="100px"
+            label-width="120px"
             class="demo-ruleForm"
           >
             <el-form-item
@@ -25,7 +25,7 @@
             status-icon
             :rules="rules"
             ref="reviseForm"
-            label-width="100px"
+            label-width="120px"
             class="demo-ruleForm"
           >
             <el-form-item label="旧密码" class="input" size="medium" prop="oldpwd" autocomplete="off">
@@ -62,12 +62,80 @@
               ></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="onRevisepwd('reviseForm')">提交修改</el-button>
+              <el-button type="primary" @click="onRevisepwd('reviseForm')">提交</el-button>
+              <el-button @click="resetForm('reviseForm')">重置</el-button>
             </el-form-item>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="设置密保问题" name="setQUE">徐赫洋nb！</el-tab-pane>
-        <el-tab-pane label="重置密保问题" name="resetQUE">徐赫洋nb+1！</el-tab-pane>
+        <el-tab-pane label="设置密保问题" name="setQUE" v-if="!checkQueSign">
+          <el-form
+            :model="newQAForm"
+            status-icon
+            :rules="rules"
+            ref="newQAForm"
+            label-width="140px"
+            class="demo-ruleForm"
+          >
+            <el-form-item label="密保问题一" size="medium" prop="question1">
+              <el-input v-model="newQAForm.question1" :placeholder="请输入第一个密保问题" class="input"></el-input>
+            </el-form-item>
+            <el-form-item label="问题答案一" size="medium" prop="answer1">
+              <el-input v-model="newQAForm.answer1" :placeholder="请输入第一个问题答案" class="input"></el-input>
+            </el-form-item>
+            <el-form-item label="密保问题二" size="medium" prop="question2">
+              <el-input v-model="newQAForm.question2" :placeholder="请输入第二个密保问题" class="input"></el-input>
+            </el-form-item>
+            <el-form-item label="问题答案二" size="medium" prop="answer2">
+              <el-input v-model="newQAForm.answer2" :placeholder="请输入第二个问题答案" class="input"></el-input>
+            </el-form-item>
+            <el-form-item label="密保问题三" size="medium" prop="question3">
+              <el-input v-model="newQAForm.question3" :placeholder="请输入第三个密保问题" class="input"></el-input>
+            </el-form-item>
+            <el-form-item label="问题答案三" size="medium" prop="answer3">
+              <el-input v-model="newQAForm.answer3" :placeholder="请输入第三个问题答案" class="input"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSetque('newQAForm')">提交</el-button>
+              <el-button @click="resetForm('newQAForm')">重置</el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="删除密保问题" name="resetQUE" v-if="checkQueSign">
+          <el-form
+            :model="answerForm"
+            status-icon
+            :rules="rules"
+            ref="answerForm"
+            label-width="140px"
+            class="demo-ruleForm"
+          >
+            <el-form-item label="密保一" size="medium" prop="answer1">
+              <el-input
+                v-model="answerForm.answer1"
+                :placeholder="questionForm.question1"
+                class="input"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="密保二" size="medium" prop="answer2">
+              <el-input
+                v-model="answerForm.answer2"
+                :placeholder="questionForm.question2"
+                class="input"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="密保三" size="medium" prop="answer3">
+              <el-input
+                v-model="answerForm.answer3"
+                :placeholder="questionForm.question3"
+                class="input"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onDelque('answerForm')">确认删除</el-button>
+              <el-button @click="resetForm('answerForm')">重置</el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
       </el-tabs>
     </Frame>
   </div>
@@ -103,16 +171,67 @@ export default {
         callback();
       }
     };
+    var specialcharacter = (rule, value, callback) => {
+      var reg = /^.*[#].*$/;
+      if (reg.test(value)) {
+        callback(new Error("请勿输入特殊字符"));
+      } else {
+        callback();
+      }
+    };
     return {
       pagetitle: "账户安全",
       activeName: "revisePWD",
       username: "",
+      checkQueSign: false,
       reviseForm: {
         oldpwd: "",
         newpwd: "",
         agapwd: ""
       },
+      questionForm: {
+        question1: "",
+        question2: "",
+        question3: ""
+      },
+      answerForm: {
+        answer1: "",
+        answer2: "",
+        answer3: ""
+      },
+      newQAForm: {
+        question1: "",
+        question2: "",
+        question3: "",
+        answer1: "",
+        answer2: "",
+        answer3: ""
+      },
       rules: {
+        question1: [
+          { required: true, message: "请输入密保问题", trigger: "blur" },
+          { required: true, validator: specialcharacter, trigger: "blur" }
+        ],
+        question2: [
+          { required: true, message: "请输入密保问题", trigger: "blur" },
+          { required: true, validator: specialcharacter, trigger: "blur" }
+        ],
+        question3: [
+          { required: true, message: "请输入密保问题", trigger: "blur" },
+          { required: true, validator: specialcharacter, trigger: "blur" }
+        ],
+        answer1: [
+          { required: true, message: "请输入问题答案", trigger: "blur" },
+          { required: true, validator: specialcharacter, trigger: "blur" }
+        ],
+        answer2: [
+          { required: true, message: "请输入问题答案", trigger: "blur" },
+          { required: true, validator: specialcharacter, trigger: "blur" }
+        ],
+        answer3: [
+          { required: true, message: "请输入问题答案", trigger: "blur" },
+          { required: true, validator: specialcharacter, trigger: "blur" }
+        ],
         oldpwd: [{ required: true, trigger: "blur", message: "请输入旧密码" }],
         newpwd: [{ required: true, validator: validatePass1, trigger: "blur" }],
         agapwd: [{ required: true, validator: validatePass2, trigger: "blur" }]
@@ -120,6 +239,9 @@ export default {
     };
   },
   methods: {
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
     onRevisepwd(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -149,10 +271,109 @@ export default {
             });
         }
       });
+    },
+    onDelque(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$axios
+            .post(
+              "/api/user/del_question.do",
+              qs.stringify({
+                answer:
+                  this.answerForm.answer1 +
+                  "#" +
+                  this.answerForm.answer2 +
+                  "#" +
+                  this.answerForm.answer3,
+                token: localStorage.token
+              }),
+              {}
+            )
+            .then(res => {
+              if (res.data.status == 1) {
+                this.$message.error("删除失败：" + res.data.msg);
+                return;
+              } else {
+                this.$message({
+                  message: "删除成功：当前账号无密保问题",
+                  type: "success"
+                });
+              }
+            })
+            .catch(error => {
+              this.$message.error("删除失败：服务器连接超时");
+            });
+        }
+      });
+    },
+    onSetque(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$axios
+            .post(
+              "/api/user/set_question.do",
+              qs.stringify({
+                question:
+                  this.newQAForm.question1 +
+                  "#" +
+                  this.newQAForm.question2 +
+                  "#" +
+                  this.newQAForm.question3,
+                answer:
+                  this.newQAForm.answer1 +
+                  "#" +
+                  this.newQAForm.answer2 +
+                  "#" +
+                  this.newQAForm.answer3,
+                token: localStorage.token
+              }),
+              {}
+            )
+            .then(res => {
+              if (res.data.status == 1) {
+                this.$message.error("设置失败：" + res.data.msg);
+                return;
+              } else {
+                this.$message({
+                  message: "设置成功：请牢记密保问题",
+                  type: "success"
+                });
+              }
+            })
+            .catch(error => {
+              this.$message.error("设置失败：服务器连接超时");
+            });
+        }
+      });
+    },
+    checkQue() {
+      this.$axios
+        .post(
+          "/api/user/check_question.do",
+          qs.stringify({
+            token: localStorage.token
+          }),
+          {}
+        )
+        .then(res => {
+          if (res.data.status == 1) {
+            this.$message.error("获取失败：" + res.data.msg);
+            return;
+          } else {
+            this.$message({
+              message: "获取成功：请牢记密保问题",
+              type: "success"
+            });
+          }
+        })
+        .catch(error => {
+          this.$message.error("获取失败：服务器连接超时");
+        });
     }
   },
   mounted() {
     this.username = localStorage.username;
+    this.checkQue();
   }
 };
 </script>

@@ -12,7 +12,7 @@
             style="text-decoration:none;color:black"
           >
             <i class="el-icon-arrow-left"></i> 返回
-          </a> |
+          </a>&nbsp;|&nbsp;
           <b>{{pagetitle}}</b>
         </div>
         <nobr style="float:right;margin-top:-60px">
@@ -96,14 +96,32 @@ export default {
       this.$router.push(router);
     },
     exit() {
-      localStorage.clear();
-      this.$router.push("login");
-    }
+      this.$axios
+        .post(
+          "/api/user/logout.do",
+          qs.stringify({ token: localStorage.token }),
+          {}
+        )
+        .then(res => {
+          if (res.data.status == 1) {
+            this.$message.error("登出失败：" + res.data.msg);
+            return;
+          }
+          this.$message({
+            message: "登出成功：您已安全退出",
+            type: "success"
+          });
+        })
+        .catch(error => {
+          this.$message.error("登出失败：服务器连接超时");
+          return;
+        });
+      this.toLogin();
+    },
   },
   mounted() {
     if (!localStorage["token"]) {
-      localStorage.clear();
-      this.$router.push("login");
+      this.toLogin();
     }
     this.token = localStorage.token;
     this.role = localStorage.role;

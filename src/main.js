@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import api from './api/api';
 import axios from 'axios';
 import qs from 'qs';
+import * as funcGlobal from './js/funcGlobal.js';
 // import {post,fetch,patch,put} from './api/http'
 Vue.config.productionTip = false;
 Vue.prototype.$ajax = api;
@@ -17,7 +18,8 @@ Vue.prototype.$axios = axios;
 // Vue.prototype.$patch=patch;
 // Vue.prototype.$put=put;
 Vue.use(ElementUI);
-Vue.use(qs);
+Vue.use(qs)
+Vue.use(funcGlobal)
 
 new Vue({
   el: '#app',

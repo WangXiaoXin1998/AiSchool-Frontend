@@ -258,6 +258,9 @@ export default {
             .then(res => {
               if (res.data.status == 1) {
                 this.$message.error("修改失败：" + res.data.msg);
+                if (res.data.msg == "TokenError") {
+                  this.toLogin();
+                }
                 return;
               } else {
                 this.$message({
@@ -265,6 +268,7 @@ export default {
                   type: "success"
                 });
               }
+              this.resetForm("reviseForm");
             })
             .catch(error => {
               this.$message.error("修改失败：服务器连接超时");
@@ -369,7 +373,7 @@ export default {
         .catch(error => {
           this.$message.error("获取失败：服务器连接超时");
         });
-    }
+    },
   },
   mounted() {
     this.username = localStorage.username;

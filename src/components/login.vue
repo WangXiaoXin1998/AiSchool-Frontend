@@ -10,7 +10,7 @@
           <el-button style="float: right; padding: 3px 0" @click="forgetpwd" type="text">忘记密码？</el-button>
         </div>
         <el-form
-          hide-required-asterisk="true"
+          hide-required-asterisk
           :model="loginform"
           status-icon
           :rules="rules"
@@ -90,7 +90,7 @@ export default {
               }
               localStorage.clear();
               localStorage.setItem('token', res.data.msg)
-          		localStorage.setItem('username', loginform.password)
+          		localStorage.setItem('username', loginform.username)
               localStorage.setItem('role', res.data.data)
               this.$router.push("index")
             })

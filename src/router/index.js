@@ -4,11 +4,10 @@ import login from '@/components/login'
 import forgetpwd from '@/components/forgetpwd'
 import index from '@/components/index'
 import safe from '@/components/safe'
-import mygroup from '@/components/mygroup'
-import mytask from '@/components/mytask'
-import userlist from '@/components/userlist'
-import managelist from '@/components/managelist'
-import tasklist from '@/components/tasklist'
+import poorlevel from '@/components/poorlevel'
+import excellentlevel from '@/components/excellentlevel'
+import yearlybill from '@/components/yearlybill'
+import consume from '@/components/consume'
 
 Vue.use(Router)
 
@@ -25,29 +24,24 @@ export default new Router({
       component: safe
     },
     {
-      path: '/mygroup',
-      name: 'mygroup',
-      component: mygroup
+      path: '/yearlybill',
+      name: 'yearlybill',
+      component: yearlybill
     },
     {
-      path: '/managelist',
-      name: 'managelist',
-      component: managelist
+      path: '/poorlevel',
+      name: 'poorlevel',
+      component: poorlevel
     },
     {
-      path: '/userlist',
-      name: 'userlist',
-      component: userlist
+      path: '/consume',
+      name: 'consume',
+      component: consume
     },
     {
-      path: '/tasklist',
-      name: 'tasklist',
-      component: tasklist
-    },
-    {
-      path: '/mytask',
-      name: 'mytask',
-      component: mytask
+      path: '/excellentlevel',
+      name: 'excellentlevel',
+      component: excellentlevel
     },
     {
       path: '/',

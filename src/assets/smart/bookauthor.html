@@ -1,0 +1,41 @@
+﻿<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Frequency</title>
+    <script src="js/echarts.min.js"></script>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:400px;"></div>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var option = {
+            title: {
+                text: '借阅图书类型统计'
+            },
+            tooltip: {},
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            },
+            series: [{
+                name: '借阅次数',
+                type: 'pie',
+                radius: '60%',
+                // center: ['50%', '60%'],
+                data: [
+                    { value: 335, name: '文艺图书' },
+                    { value: 610, name: '历史图书' },
+                    { value: 434, name: '外文图书' },
+                ]
+            }]
+        };
+        myChart.setOption(option);
+    </script>
+</body>
+
+</html>

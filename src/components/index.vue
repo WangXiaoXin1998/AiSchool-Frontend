@@ -24,10 +24,6 @@
           <br />
           <i class="el-icon-s-shop"></i>
           &ensp;所属组织：{{user.group}}
-          <br />
-          <br />
-          <i class="el-icon-s-order"></i>
-          &ensp;待提交任务：{{user.mission}}个
         </el-col>
       </el-row>
     </Frame>
@@ -70,18 +66,17 @@ export default {
     getData() {
       this.$axios
         .post(
-          "/api/user/get_username.do",
+          "/apife/api/getuserinfor",
           qs.stringify({ token: localStorage.token }),
           {}
         )
         .then(res => {
-          if (res.data.status == 1) {
-            this.$message.error("获取失败：" + res.data.msg);
+          if (res.data.error_num == 1) {
+            this.$message.error("获取失败：" + res.msg);
             return;
           }
-          this.user.username = res.data.data.username;
-          this.user.group = res.data.data.group;
-          this.user.mission = res.data.data.mission;
+          this.user.username = localStorage.username;
+          this.user.group = res.data.list.group;
         })
         .catch(error => {
           this.$message.error("获取失败：服务器连接超时");

@@ -11,11 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': {
-        target: 'http://d273996y52.wicp.vip',
+      '/apife': {
+        target: 'http://127.0.0.1:8000/',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': 'http://d273996y52.wicp.vip'
+          '^/apife': 'http://127.0.0.1:8000/'
         }
       }
     },

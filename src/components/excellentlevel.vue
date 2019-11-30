@@ -1,6 +1,8 @@
 <template>
   <div id="control">
-    <Frame v-bind:pagetitle="pagetitle"></Frame>
+    <Frame v-bind:pagetitle="pagetitle">
+      功能即将上线
+    </Frame>
   </div>
 </template>
 
@@ -15,7 +17,7 @@ export default {
   name: "managelist",
   data() {
     return {
-      pagetitle:"管理员列表",
+      pagetitle:"评优评级",
     };
   },
   methods: {}

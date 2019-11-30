@@ -5,7 +5,7 @@
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>
-            <b>CMC文件云</b>
+            <b>智慧校园系统 - 登录</b>
           </span>
           <el-button style="float: right; padding: 3px 0" @click="forgetpwd" type="text">忘记密码？</el-button>
         </div>
@@ -82,16 +82,21 @@ export default {
             password: this.loginform.password
           };
           this.$axios
-            .post("/api/user/login.do", qs.stringify(loginform), {})
+            .post("apife/api/login", qs.stringify(loginform), {})
             .then(res => {
-              if (res.data.status == 1) {
+              if (loginform.username!='1751119' || loginform.password!='admin'){
+                this.$message.error("登录失败：用户名或密码错误");
+                return;
+              }
+              if (res.data.error_num == 1) {
                 this.$message.error("登录失败：" + res.data.msg);
                 return;
               }
+              console.log(res)
               localStorage.clear();
-              localStorage.setItem('token', res.data.msg)
+              localStorage.setItem('token', res.data.token)
           		localStorage.setItem('username', loginform.username)
-              localStorage.setItem('role', res.data.data)
+              localStorage.setItem('role', res.data.role)
               this.$router.push("index")
             })
             .catch(error => {

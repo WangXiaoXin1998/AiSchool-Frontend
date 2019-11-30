@@ -5,7 +5,7 @@
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>
-            <b>CMC文件云</b>
+            <b>智慧校园系统 - 忘记密码</b>
           </span>
           <el-button style="float: right; padding: 3px 0" @click="relogin" type="text">返回登录</el-button>
         </div>
@@ -186,7 +186,7 @@ export default {
             };
             this.$axios
               .post(
-                "/api/user/forget_get_question.do",
+                "/apife/user/forget_get_question.do",
                 qs.stringify(pwdform),
                 {}
               )
@@ -223,7 +223,7 @@ export default {
             };
             this.$axios
               .post(
-                "/api/user/forget_check_answer.do",
+                "/apife/user/forget_check_answer.do",
                 qs.stringify(pwdform),
                 {}
               )
@@ -248,7 +248,7 @@ export default {
             };
             this.$axios
               .post(
-                "/api/user/forget_reset_password.do",
+                "/apife/user/forget_reset_password.do",
                 qs.stringify(pwdform),
                 {}
               )

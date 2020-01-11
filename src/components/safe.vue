@@ -377,7 +377,7 @@ export default {
   },
   mounted() {
     this.username = localStorage.username;
-    this.checkQue();
+    // this.checkQue();
   }
 };
 </script>

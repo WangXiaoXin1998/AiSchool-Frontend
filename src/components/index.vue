@@ -10,20 +10,20 @@
         <el-col :span="7">
           <div class="demo-basic--circle">
             <el-avatar :size="230">
-              <nobr style="font-size:60px">USER</nobr>
+              <nobr style="font-size:60px">{{user.role==1?'USER':'ADMIN'}}</nobr>
             </el-avatar>
           </div>
         </el-col>
         <el-col :span="14">
-          <div class="bigtitle">{{timeduring}}，{{user.username?user.username:'未登录用户'}}！</div>
+          <div class="bigtitle">{{timeduring}}，{{user.name?user.name:'未登录用户'}}！</div>
           <br />
           <br />
           <i class="el-icon-user-solid"></i>
-          &ensp;用户名称：{{user.username}}
+          &ensp;用户账号：{{user.username}}
           <br />
           <br />
           <i class="el-icon-s-shop"></i>
-          &ensp;所属组织：{{user.group}}
+          &ensp;所属组织：{{user.org}}
         </el-col>
       </el-row>
     </Frame>
@@ -45,8 +45,9 @@ export default {
       timeduring: "",
       user: {
         username: "",
-        group: "",
-        mission: 0
+        org: "",
+        role: "",
+        name: ""
       }
     };
   },
@@ -72,11 +73,13 @@ export default {
         )
         .then(res => {
           if (res.data.error_num == 1) {
-            this.$message.error("获取失败：" + res.msg);
+            this.$message.error("获取失败：" + res.data.msg);
             return;
           }
           this.user.username = localStorage.username;
-          this.user.group = res.data.list.group;
+          this.user.org = res.data.org;
+          this.user.name = res.data.name;
+          this.user.role = res.data.role;
         })
         .catch(error => {
           this.$message.error("获取失败：服务器连接超时");

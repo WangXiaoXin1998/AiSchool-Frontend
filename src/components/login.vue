@@ -1,6 +1,6 @@
 <template>
   <div id="control">
-    <bglizi></bglizi>
+    <!-- <bglizi></bglizi> -->
     <div class="loginform">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
@@ -82,17 +82,12 @@ export default {
             password: this.loginform.password
           };
           this.$axios
-            .post("apife/api/login", qs.stringify(loginform), {})
+            .post("apife/api/login",qs.stringify(loginform),{})
             .then(res => {
-              if (loginform.username!='1751119' || loginform.password!='admin'){
-                this.$message.error("登录失败：用户名或密码错误");
-                return;
-              }
               if (res.data.error_num == 1) {
                 this.$message.error("登录失败：" + res.data.msg);
                 return;
               }
-              console.log(res)
               localStorage.clear();
               localStorage.setItem('token', res.data.token)
           		localStorage.setItem('username', loginform.username)

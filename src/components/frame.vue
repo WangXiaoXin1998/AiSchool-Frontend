@@ -89,7 +89,7 @@ export default {
     exit() {
       this.$axios
         .post(
-          "/api/user/logout.do",
+          "/apifes/user/logout.do",
           qs.stringify({ token: localStorage.token }),
           {}
         )
@@ -104,7 +104,7 @@ export default {
           });
         })
         .catch(error => {
-          this.$message.error("登出失败：服务器连接超时");
+          // this.$message.error("登出失败：服务器连接超时");
           return;
         });
       this.toLogin();

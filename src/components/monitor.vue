@@ -17,7 +17,7 @@ export default {
   name: "managelist",
   data() {
     return {
-      pagetitle:"评优评级",
+      pagetitle:"异动监测",
     };
   },
   methods: {}

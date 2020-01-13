@@ -247,7 +247,7 @@ export default {
         if (valid) {
           this.$axios
             .post(
-              "/api/user/reset_password.do",
+              "/apife/api/forgetpwd",
               qs.stringify({
                 passwordOld: this.reviseForm.oldpwd,
                 passwordNew: this.reviseForm.agapwd,
@@ -256,11 +256,8 @@ export default {
               {}
             )
             .then(res => {
-              if (res.data.status == 1) {
+              if (res.data.error_num == 1) {
                 this.$message.error("修改失败：" + res.data.msg);
-                if (res.data.msg == "TokenError") {
-                  this.toLogin();
-                }
                 return;
               } else {
                 this.$message({

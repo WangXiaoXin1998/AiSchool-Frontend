@@ -33,9 +33,9 @@
                 <el-menu-item index="1-2">账户安全</el-menu-item>
               </el-link>
             </el-submenu>
-            <el-submenu index="2">
+            <el-submenu v-if="role==1" index="2">
               <template slot="title">
-                <i class="el-icon-menu"></i>用户功能
+                <i class="el-icon-menu"></i>校园消费
               </template>
               <el-link @click="goto('consume')" target="_self">
                 <el-menu-item index="2-1">消费监控</el-menu-item>
@@ -44,17 +44,23 @@
                 <el-menu-item index="2-2">年度账单</el-menu-item>
               </el-link>
             </el-submenu>
-            <el-submenu index="3">
+            <el-submenu v-if="role==2" index="3">
               <template slot="title">
-                <i class="el-icon-folder-opened"></i>评级功能
+                <i class="el-icon-s-order"></i>用户管理
               </template>
-              <el-link @click="goto('poorlevel')" target="_self">
-                <!-- 文件组中的任务+用邀请码添加的任务，专指自己需要上传的任务 -->
-                <el-menu-item index="3-1">贫困评级</el-menu-item>
+              <el-link @click="goto('accountmanage')" target="_self">
+                <el-menu-item index="3-1">账号管理</el-menu-item>
               </el-link>
-              <el-link @click="goto('excellentlevel')" target="_self">
-                <!-- 加入的文件组、创建文件组 -->
-                <el-menu-item index="3-2">评优评级</el-menu-item>
+            </el-submenu>
+            <el-submenu v-if="role==2" index="4">
+              <template slot="title">
+                <i class="el-icon-folder-opened"></i>评级监测
+              </template>
+              <el-link @click="goto('monitor')" target="_self">
+                <el-menu-item index="3-1">异动监测</el-menu-item>
+              </el-link>
+              <el-link @click="goto('poorlevel')" target="_self">
+                <el-menu-item index="3-2">贫困评级</el-menu-item>
               </el-link>
             </el-submenu>
           </el-menu>

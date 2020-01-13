@@ -7,8 +7,14 @@
         </div>
         <div>
           <el-form :inline="true" :model="formInline" class="demo-form-inline">
+            <el-form-item label="性别">
+              <el-select v-model="formInline.sex" placeholder="请选择性别">
+                <el-option label="男" value="1"></el-option>
+                <el-option label="女" value="0"></el-option>
+              </el-select>
+            </el-form-item>
             <el-form-item label="城市等级">
-              <el-select v-model="formInline.city" placeholder="城市等级">
+              <el-select v-model="formInline.city" placeholder="请选择城市等级">
                 <el-option label="一线城市" value="1"></el-option>
                 <el-option label="二线城市" value="2"></el-option>
                 <el-option label="三线城市" value="3"></el-option>
@@ -16,8 +22,8 @@
                 <el-option label="五线城市" value="5"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="年均收入">
-              <el-input v-model="formInline.income" placeholder="年均收入"></el-input>
+            <el-form-item label="月均收入">
+              <el-input v-model="formInline.income" placeholder="月均收入"></el-input>
             </el-form-item>
             <el-form-item label="单亲家庭">
               <el-select v-model="formInline.dq" placeholder="是否单亲家庭">
@@ -69,8 +75,9 @@
         <div>
           <el-table ref="filterTable" :data="tableData" style="width: 100%">
             <el-table-column prop="username" label="用户名" sortable></el-table-column>
+            <el-table-column prop="sex" label="性别" sortable></el-table-column>
             <el-table-column prop="city" label="城市级别" sortable></el-table-column>
-            <el-table-column prop="income" label="年均收入" sortable></el-table-column>
+            <el-table-column prop="income" label="月均收入" sortable></el-table-column>
             <el-table-column prop="dq" label="单亲家庭" sortable></el-table-column>
             <el-table-column prop="ls" label="烈士子女" sortable></el-table-column>
             <el-table-column prop="gr" label="孤儿" sortable></el-table-column>
@@ -114,6 +121,7 @@ export default {
       showResult: false,
       formInline: {
         city: "",
+        sex: "",
         income: 0,
         dq: "",
         ls: "",
@@ -168,6 +176,7 @@ export default {
           for (var i = 0; i < res.data.list.length; i++) {
             this.tableData.push({
               username: res.data.list[i].fields.username,
+              sex: res.data.list[i].fields.sex ? "男" : "女",
               city: res.data.list[i].fields.city,
               income: res.data.list[i].fields.income,
               dq: res.data.list[i].fields.dq ? "是" : "否",

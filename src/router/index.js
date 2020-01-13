@@ -5,7 +5,8 @@ import forgetpwd from '@/components/forgetpwd'
 import index from '@/components/index'
 import safe from '@/components/safe'
 import poorlevel from '@/components/poorlevel'
-import excellentlevel from '@/components/excellentlevel'
+import monitor from '@/components/monitor'
+import accountmanage from '@/components/accountmanage'
 import yearlybill from '@/components/yearlybill'
 import consume from '@/components/consume'
 
@@ -39,9 +40,14 @@ export default new Router({
       component: consume
     },
     {
-      path: '/excellentlevel',
-      name: 'excellentlevel',
-      component: excellentlevel
+      path: '/monitor',
+      name: 'monitor',
+      component: monitor
+    },
+    {
+      path: '/accountmanage',
+      name: 'accountmanage',
+      component: accountmanage
     },
     {
       path: '/',

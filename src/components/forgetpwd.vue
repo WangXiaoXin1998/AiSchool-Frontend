@@ -1,8 +1,25 @@
 <template>
   <div id="control">
-    <bglizi></bglizi>
+    <vue-particles
+      color="#ccc"
+      :particleOpacity="0.7"
+      :particlesNumber="200"
+      shapeType="circle"
+      :particleSize="3"
+      linesColor="#dedede"
+      :linesWidth="2"
+      :lineLinked="true"
+      :lineOpacity="0.4"
+      :linesDistance="150"
+      :moveSpeed="2"
+      :hoverEffect="true"
+      hoverMode="grab"
+      :clickEffect="true"
+      clickMode="push"
+      class="lizi"
+    ></vue-particles>
     <div class="pwdform">
-      <el-card class="box-card">
+      <el-card class="box-card" shadow="always">
         <div slot="header" class="clearfix">
           <span>
             <b>智慧校园系统 - 忘记密码</b>
@@ -108,9 +125,9 @@
 
 <script>
 import Vue from "vue";
-import bglizi from "./bglizi.vue";
 import qs from "qs";
-Vue.component("bglizi", bglizi);
+import VueParticles from "vue-particles";
+Vue.use(VueParticles);
 Vue.use(qs);
 
 export default {

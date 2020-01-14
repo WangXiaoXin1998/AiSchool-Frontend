@@ -54,13 +54,16 @@
             </el-submenu>
             <el-submenu v-if="role==2" index="4">
               <template slot="title">
-                <i class="el-icon-folder-opened"></i>评级监测
+                <i class="el-icon-folder-opened"></i>贫困管理
               </template>
-              <el-link @click="goto('monitor')" target="_self">
-                <el-menu-item index="3-1">异动监测</el-menu-item>
+              <el-link @click="goto('poormanage')" target="_self">
+                <el-menu-item index="3-1">信息维护</el-menu-item>
               </el-link>
               <el-link @click="goto('poorlevel')" target="_self">
                 <el-menu-item index="3-2">贫困评级</el-menu-item>
+              </el-link>
+              <el-link @click="goto('poormonitor')" target="_self">
+                <el-menu-item index="3-2">错评监测</el-menu-item>
               </el-link>
             </el-submenu>
           </el-menu>

@@ -6,7 +6,7 @@
         <el-input v-model="newname" placeholder="请输入用户姓名" style="width:200px"></el-input>
         <el-button type="primary" @click="addAccount">添加账号信息</el-button>
       </div>
-      <el-table ref="filterTable" :data="tableData" style="width: 100%">
+      <el-table ref="filterTable" :data="tableData" style="width: 100%" v-loading="tableLoading">
         <el-table-column prop="username" label="用户名" sortable column-key="date"></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
         <!-- <el-table-column prop="role" label="角色"></el-table-column> -->
@@ -27,7 +27,12 @@
         <el-table-column label>
           <template slot-scope="scope">
             <el-button size="mini" @click="handleReset(scope.row)">重置</el-button>
-            <el-button v-if="scope.row.role!='管理员'" size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button
+              v-if="scope.row.role!='管理员'"
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.row)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -50,7 +55,8 @@ export default {
       newaccount: "",
       newname: "",
       consumelist: [],
-      tableData: []
+      tableData: [],
+      tableLoading : true
     };
   },
   methods: {
@@ -80,8 +86,8 @@ export default {
         });
       this.getAccount();
     },
-    getAccount() {
-      this.$axios
+    async getAccount() {
+      await this.$axios
         .post(
           "/apife/api/getaccount",
           qs.stringify({ token: localStorage.token }),
@@ -102,6 +108,7 @@ export default {
           console.log(error);
           this.$message.error("获取失败：服务器连接超时");
         });
+        this.tableLoading = false;
     },
     handleReset(row) {
       var datatable = {

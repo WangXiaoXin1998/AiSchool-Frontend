@@ -21,7 +21,7 @@
       </el-header>
       <el-container>
         <el-aside width="200px">
-          <el-menu :default-openeds="['1','2','3','4']">
+          <el-menu :default-openeds="['1','2','3','4','5']">
             <el-submenu index="1" v-if="role">
               <template slot="title">
                 <i class="el-icon-user-solid"></i>我的主页
@@ -57,13 +57,21 @@
                 <i class="el-icon-folder-opened"></i>贫困管理
               </template>
               <el-link @click="goto('poormanage')" target="_self">
-                <el-menu-item index="3-1">信息维护</el-menu-item>
+                <el-menu-item index="4-1">信息维护</el-menu-item>
               </el-link>
               <el-link @click="goto('poorlevel')" target="_self">
-                <el-menu-item index="3-2">贫困评级</el-menu-item>
+                <el-menu-item index="4-2">贫困评级</el-menu-item>
               </el-link>
               <el-link @click="goto('poormonitor')" target="_self">
-                <el-menu-item index="3-2">错评监测</el-menu-item>
+                <el-menu-item index="4-3">错评监测</el-menu-item>
+              </el-link>
+            </el-submenu>
+            <el-submenu v-if="role==1" index="5">
+              <template slot="title">
+                <i class="el-icon-s-operation"></i>控制台
+              </template>
+              <el-link @click="goto('consoleconsume')" target="_self">
+                <el-menu-item index="5-1">交易维护</el-menu-item>
               </el-link>
             </el-submenu>
           </el-menu>

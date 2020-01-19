@@ -204,34 +204,6 @@ export default {
     filterTag(value, row) {
       return row.level === value;
     },
-    async addConsume() {
-      await this.$axios
-        .get(
-          "/apife/api/createconsume?username=" +
-            localStorage.username +
-            "&money=" +
-            this.input2 +
-            "&place=" +
-            this.select1,
-          {}
-        )
-        .then(res => {
-          if (res.data.error_num != 1) {
-            this.$message({
-              message:
-                "添加成功：该条记录被判定为" +
-                (res.data.state == "1" ? "正常" : "可疑"),
-              type: "success"
-            });
-          } else {
-            this.$message.error("添加失败：" + res.data.msg);
-          }
-        })
-        .catch(error => {
-          this.$message.error("添加失败：服务器连接超时");
-        });
-      this.getConsume();
-    },
     async getPoor() {
       await this.$axios
         .get("/apife/api/getpoor", {})
@@ -245,7 +217,7 @@ export default {
             this.tableData.push({
               username: res.data.list[i].fields.username,
               sex: res.data.list[i].fields.sex ? "男" : "女",
-              city: res.data.list[i].fields.city,
+              city: this.getCityLevel(res.data.list[i].fields.city),
               income: res.data.list[i].fields.income,
               dq: res.data.list[i].fields.dq ? "是" : "否",
               ls: res.data.list[i].fields.ls ? "是" : "否",
@@ -289,14 +261,14 @@ export default {
         .get("apife/api/checkpoor", { params: { check: check } }, {})
         .then(res => {
           var result = res.data.result[0];
-          this.resultLevel = result[0][0].replace("'", "").replace("'", "");
+          this.resultLevel = result[0][0];
           for (var i = 0; i < 3; i++) {
             this.result[i].persent = 0;
           }
           for (var i = 0; i < result.length; i++) {
-            if (result[i][0] == "'不困难'") {
+            if (result[i][0] == "不困难") {
               this.result[0].persent = result[i][1];
-            } else if (result[i][0] == "'一般困难'") {
+            } else if (result[i][0] == "一般困难") {
               this.result[1].persent = result[i][1];
             } else {
               this.result[2].persent = result[i][1];

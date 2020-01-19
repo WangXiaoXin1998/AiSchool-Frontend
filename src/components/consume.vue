@@ -1,25 +1,42 @@
 <template>
   <div id="control">
     <Frame v-bind:pagetitle="pagetitle">
-      <div style="text-align:right">
-        <el-select v-model="select1" placeholder="请选择消费地点">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-        <el-input v-model="input2" placeholder="请输入消费金额" style="width:200px"></el-input>
-        <el-button type="primary" @click="addConsume">添加消费信息</el-button>
-      </div>
-      <el-table ref="filterTable" :data="tableData" style="width: 100%">
-        <el-table-column prop="time" label="时间" sortable column-key="date"></el-table-column>
-        <el-table-column prop="place" label="地点"></el-table-column>
-        <el-table-column prop="money" label="金额"></el-table-column>
+      <el-row :gutter="20">
+        <el-col :span="12" :key="item">
+          <div class="grid-content bg-purple">
+            <el-card class="box-card">
+              <div slot="header" class="summarytitle">
+                <span>{{summary[0].name}}</span>
+              </div>
+              <div class="summarycontent">{{summary[0].content}}</div>
+            </el-card>
+          </div>
+        </el-col>
+        <el-col :span="12" :key="item">
+          <div class="grid-content bg-purple">
+            <el-card class="box-card">
+              <div slot="header" class="summarytitle">
+                <span>{{summary[1].name}}</span>
+              </div>
+              <div class="summarycontent">{{summary[1].content}}</div>
+            </el-card>
+          </div>
+        </el-col>
+      </el-row>
+      <br />
+      <el-table ref="filterTable" :data="tableData" style="width: 100%" v-loading="tableloading">
+        <el-table-column prop="time" label="交易时间" sortable column-key="date"></el-table-column>
         <el-table-column
-          prop="tag"
-          label="标签"
+          prop="place"
+          label="交易地点"
+          :filters="[{ text: '第一餐厅1楼', value: '第一餐厅1楼' }, { text: '第一餐厅2楼', value: '第一餐厅2楼' },{ text: '第二餐厅1楼', value: '第二餐厅1楼' }, { text: '第二餐厅2楼', value: '第二餐厅2楼' },{ text: '第三餐厅1楼', value: '第三餐厅1楼' }, { text: '第三餐厅2楼', value: '第三餐厅2楼' }]"
+          :filter-method="filterPlace"
+        ></el-table-column>
+        <el-table-column prop="content" label="交易内容"></el-table-column>
+        <el-table-column prop="money" label="交易金额"></el-table-column>
+        <el-table-column
+          prop="state"
+          label="交易状态"
           width="100"
           :filters="[{ text: '正常', value: '正常' }, { text: '可疑', value: '可疑' }]"
           :filter-method="filterTag"
@@ -32,6 +49,7 @@
             >{{scope.row.state}}</el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="description" label="备注"></el-table-column>
       </el-table>
     </Frame>
   </div>
@@ -49,91 +67,87 @@ export default {
   data() {
     return {
       pagetitle: "消费监控",
-      options: [
-        {
-          value: "第一餐厅",
-          label: "第一餐厅"
-        },
-        {
-          value: "第二餐厅",
-          label: "第二餐厅"
-        },
-        {
-          value: "第三餐厅",
-          label: "第三餐厅"
-        },
-        {
-          value: "第四餐厅",
-          label: "第四餐厅"
-        }
-      ],
+      tableloading: true,
       select1: "",
       input2: "",
       consumelist: [],
+      summary: [
+        {
+          name: "当月消费总额",
+          content: 0
+        },
+        {
+          name: "猜你喜欢吃的",
+          content: "鸡肉拌饭"
+        }
+      ],
       tableData: []
     };
   },
   methods: {
     filterTag(value, row) {
-      return row.tag === value;
+      return row.state === value;
     },
-    async addConsume() {
-      await this.$axios
-        .get(
-          "/apife/api/createconsume?username=" +
-            localStorage.username +
-            "&money=" +
-            this.input2 +
-            "&place=" +
-            this.select1,
-          {}
-        )
-        .then(res => {
-          if (res.data.error_num != 1) {
-            this.$message({
-              message:
-                "添加成功：该条记录被判定为" +
-                (res.data.state == "1" ? "正常" : "可疑"),
-              type: "success"
-            });
-          } else {
-            this.$message.error("添加失败：" + res.data.msg);
-          }
-        })
-        .catch(error => {
-          this.$message.error("添加失败：服务器连接超时");
-        });
-      this.getConsume();
+    filterPlace(value, row) {
+      return row.place === value;
     },
     getConsume() {
       this.$axios
         .get("/apife/api/getconsume?username=" + localStorage.username, {})
         .then(res => {
-          // this.$message({
-          //   message: "获取成功：已获取最近的消费记录",
-          //   type: "success"
-          // });
           this.tableData = [];
           for (var i = res.data.list.length - 1; i >= 0; i--) {
             res.data.list[i].fields.time = res.data.list[i].fields.time
               .replace("T", " ")
               .substring(0, 19);
             this.tableData.push({
-              money: res.data.list[i].fields.money,
+              money: "¥ " + res.data.list[i].fields.money.toFixed(2),
               time: res.data.list[i].fields.time,
               place: res.data.list[i].fields.place,
-              state: res.data.list[i].fields.state == "1" ? "正常" : "可疑"
+              content: res.data.list[i].fields.content,
+              state: res.data.list[i].fields.state == 0 ? "正常" : "可疑",
+              description: this.getDes(res.data.list[i].fields.state)
             });
           }
+          this.tableloading = false;
         })
         .catch(error => {
           console.log(error);
           this.$message.error("获取失败：服务器连接超时");
         });
+    },
+    getSummary() {
+      this.$axios
+        .post(
+          "/apife/api/getsummary",
+          qs.stringify({ token: localStorage.token }),
+          {}
+        )
+        .then(res => {
+          this.summary[0].content = "¥ " + res.data.totalmoney.toFixed(2);
+        })
+        .catch(error => {
+          console.log(error);
+          this.$message.error("获取失败：服务器连接超时");
+        });
+    },
+    getDes(state) {
+      if (state == 16) {
+        return "消费金额、时间、地点可疑";
+      } else if (state == 8) {
+        return "消费时间、地点可疑";
+      } else if (state == 4) {
+        return "消费金额、时间可疑";
+      } else if (state == 2) {
+        return "消费金额、地点可疑";
+      } else if (state == 1) {
+        return "消费金额可疑";
+      }
     }
   },
   mounted() {
     this.getConsume();
+    this.getSummary();
   }
 };
 </script>
@@ -147,5 +161,17 @@ export default {
 
 .el-aside {
   color: #333;
+}
+
+.summarytitle {
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.summarycontent {
+  font-size: 40px;
+  font-weight: 500;
+  text-align: center;
 }
 </style>

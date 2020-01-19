@@ -8,6 +8,7 @@ import poorlevel from '@/components/poorlevel'
 import poormonitor from '@/components/poormonitor'
 import poormanage from '@/components/poormanage'
 import accountmanage from '@/components/accountmanage'
+import consoleconsume from '@/components/consoleconsume'
 import yearlybill from '@/components/yearlybill'
 import consume from '@/components/consume'
 
@@ -54,6 +55,11 @@ export default new Router({
       path: '/accountmanage',
       name: 'accountmanage',
       component: accountmanage
+    },
+    {
+      path: '/consoleconsume',
+      name: 'consoleconsume',
+      component: consoleconsume
     },
     {
       path: '/',

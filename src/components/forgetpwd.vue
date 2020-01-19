@@ -22,7 +22,7 @@
       <el-card class="box-card" shadow="always">
         <div slot="header" class="clearfix">
           <span>
-            <b>智慧校园系统 - 忘记密码</b>
+            <b>AiSchool - 忘记密码</b>
           </span>
           <el-button style="float: right; padding: 3px 0" @click="relogin" type="text">返回登录</el-button>
         </div>

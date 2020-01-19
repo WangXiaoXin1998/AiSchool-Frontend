@@ -22,7 +22,7 @@
       <el-card class="box-card" shadow="always">
         <div slot="header" class="clearfix">
           <span>
-            <b>智慧校园系统 - 登录</b>
+            <b>AiSchool - 登录</b>
           </span>
           <el-button style="float: right; padding: 3px 0" @click="forgetpwd" type="text">忘记密码？</el-button>
         </div>

@@ -8,7 +8,11 @@
               <div slot="header" class="summarytitle">
                 <span>{{summary[0].name}}</span>
               </div>
-              <div class="summarycontent">{{summary[0].content}}</div>
+              <div class="summarycontent">
+                {{summary[0].content}}
+                <br />
+                <div class="button2">共计消费{{summary[0].remark}}次</div>
+              </div>
             </el-card>
           </div>
         </el-col>
@@ -17,8 +21,15 @@
             <el-card class="box-card">
               <div slot="header" class="summarytitle">
                 <span>{{summary[1].name}}</span>
+                <el-button class="button1" @click="changefood" type="text">
+                  <i class="el-icon-refresh">换一换</i>
+                </el-button>
               </div>
-              <div class="summarycontent">{{summary[1].content}}</div>
+              <div class="summarycontent">
+                {{summary[1].content}}
+                <br />
+                <div class="button2">来自用户{{summary[1].remark}}推荐</div>
+              </div>
             </el-card>
           </div>
         </el-col>
@@ -74,14 +85,18 @@ export default {
       summary: [
         {
           name: "当月消费总额",
-          content: 0
+          content: 0,
+          remark: 0,
         },
         {
-          name: "猜你喜欢吃的",
-          content: "鸡肉拌饭"
+          name: "猜你喜欢吃",
+          content: "/",
+          remark: 0,
         }
       ],
-      tableData: []
+      reindex: 0,
+      tableData: [],
+      predictResult: []
     };
   },
   methods: {
@@ -90,6 +105,15 @@ export default {
     },
     filterPlace(value, row) {
       return row.place === value;
+    },
+    changefood() {
+      length = this.predictResult.length;
+      if (this.reindex == length - 1) {
+        this.reindex = 0;
+      }
+      this.reindex = this.reindex + 1;
+      this.summary[1].remark = this.predictResult[this.reindex].username;
+      this.summary[1].content = this.predictResult[this.reindex].food;
     },
     getConsume() {
       this.$axios
@@ -125,6 +149,15 @@ export default {
         )
         .then(res => {
           this.summary[0].content = "¥ " + res.data.totalmoney.toFixed(2);
+          this.summary[0].remark = res.data.totalnumber;
+          for (var re of res.data.predictResult) {
+            this.predictResult.push({ food: re[0], username: re[1] });
+          }
+          if (this.predictResult.length > 0) {
+            this.summary[1].remark = this.predictResult[0].username;
+            this.summary[1].content = this.predictResult[0].food;
+          }
+          console.log(this.predictResult);
         })
         .catch(error => {
           console.log(error);
@@ -173,5 +206,17 @@ export default {
   font-size: 40px;
   font-weight: 500;
   text-align: center;
+}
+
+.button1 {
+  float: right;
+  /* position: absolute; */
+  padding: 3px 0;
+}
+.button2 {
+  /* padding: 3px 0; */
+  font-size: 15px;
+  color: #a9a9a9;
+  margin-top: 8px;
 }
 </style>

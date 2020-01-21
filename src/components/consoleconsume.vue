@@ -1,6 +1,8 @@
 <template>
   <div id="control">
     <Frame v-bind:pagetitle="pagetitle">
+      <div>由于消费行为应由用户线下产生，该页面用于模拟消费行为的产生。</div>
+      <br />
       <el-select v-model="select1" placeholder="请选择交易地点">
         <el-option
           v-for="item in options"
@@ -52,7 +54,7 @@ export default {
         {
           value: "第三餐厅2楼",
           label: "第三餐厅2楼"
-        },
+        }
       ],
       select1: "",
       input2: "",

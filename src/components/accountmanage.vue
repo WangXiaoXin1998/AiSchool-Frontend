@@ -56,7 +56,7 @@ export default {
       newname: "",
       consumelist: [],
       tableData: [],
-      tableLoading : true
+      tableLoading: true
     };
   },
   methods: {
@@ -108,7 +108,7 @@ export default {
           console.log(error);
           this.$message.error("获取失败：服务器连接超时");
         });
-        this.tableLoading = false;
+      this.tableLoading = false;
     },
     handleReset(row) {
       var datatable = {

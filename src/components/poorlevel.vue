@@ -292,7 +292,6 @@ export default {
       myChart.setOption({
         tooltip: {
           trigger: "item",
-
           formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         itemStyle: {

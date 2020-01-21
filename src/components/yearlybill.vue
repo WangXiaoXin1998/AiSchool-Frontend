@@ -4,13 +4,7 @@
       <center>
         <el-button type="primary" @click="viewreport">全屏查看</el-button>
       </center>
-      <iframe
-        id="tt"
-        src="http://wxxnb.com/smartdemo/index.html"
-        width="100%"
-        height="1000px"
-        frameborder="0"
-      ></iframe>
+      <yearlybilldetail></yearlybilldetail>
     </Frame>
   </div>
 </template>
@@ -19,7 +13,9 @@
 import Vue from "vue";
 import qs from "qs";
 import frame from "./frame.vue";
+import yearlybilldetail from "./yearlybilldetail.vue";
 Vue.component("Frame", frame);
+Vue.component("yearlybilldetail", yearlybilldetail);
 Vue.use(qs);
 
 export default {
@@ -31,7 +27,7 @@ export default {
   },
   methods: {
     viewreport(){
-      window.location.href = "http://wxxnb.com/smartdemo/index.html"
+      this.$router.push('yearlybilldetail')
     }
   }
 };

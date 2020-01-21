@@ -10,6 +10,7 @@ import poormanage from '@/components/poormanage'
 import accountmanage from '@/components/accountmanage'
 import consoleconsume from '@/components/consoleconsume'
 import yearlybill from '@/components/yearlybill'
+import yearlybilldetail from '@/components/yearlybilldetail'
 import consume from '@/components/consume'
 
 Vue.use(Router)
@@ -30,6 +31,11 @@ export default new Router({
       path: '/yearlybill',
       name: 'yearlybill',
       component: yearlybill
+    },
+    {
+      path: '/yearlybilldetail',
+      name: 'yearlybilldetail',
+      component: yearlybilldetail
     },
     {
       path: '/poorlevel',

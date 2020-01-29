@@ -33,23 +33,26 @@
                 <el-menu-item index="1-2">账户安全</el-menu-item>
               </el-link>
             </el-submenu>
-            <el-submenu v-if="role==1" index="2">
-              <template slot="title">
-                <i class="el-icon-menu"></i>校园消费
-              </template>
-              <el-link @click="goto('consume')" target="_self">
-                <el-menu-item index="2-1">消费监控</el-menu-item>
-              </el-link>
-              <el-link @click="goto('yearlybill')" target="_self">
-                <el-menu-item index="2-2">年度账单</el-menu-item>
-              </el-link>
-            </el-submenu>
-            <el-submenu v-if="role==2" index="3">
+            <el-submenu v-if="role==2" index="2">
               <template slot="title">
                 <i class="el-icon-s-order"></i>用户管理
               </template>
               <el-link @click="goto('accountmanage')" target="_self">
                 <el-menu-item index="3-1">账号管理</el-menu-item>
+              </el-link>
+            </el-submenu>
+            <el-submenu index="3">
+              <template slot="title">
+                <i class="el-icon-menu"></i>校园消费
+              </template>
+              <el-link @click="goto('consume')" target="_self"  v-if="role==1">
+                <el-menu-item index="2-1">消费明细</el-menu-item>
+              </el-link>
+              <el-link @click="goto('yearlybill')" target="_self"  v-if="role==1">
+                <el-menu-item index="2-2">年度账单</el-menu-item>
+              </el-link>
+              <el-link @click="goto('consumemonitor')" target="_self"  v-if="role==2">
+                <el-menu-item index="2-3">消费监测</el-menu-item>
               </el-link>
             </el-submenu>
             <el-submenu v-if="role==2" index="4">

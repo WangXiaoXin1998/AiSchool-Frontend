@@ -74,10 +74,10 @@ Vue.component("Frame", frame);
 Vue.use(qs);
 
 export default {
-  name: "managelist",
+  name: "consume",
   data() {
     return {
-      pagetitle: "消费监控",
+      pagetitle: "消费明细",
       tableloading: true,
       select1: "",
       input2: "",

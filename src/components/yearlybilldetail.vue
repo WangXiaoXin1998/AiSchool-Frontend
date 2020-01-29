@@ -215,7 +215,7 @@ export default {
       base: {
         year: 2019,
         number: localStorage.username,
-        name: "王晓鑫"
+        name: ""
       },
       frequence: {
         number: 412
@@ -249,6 +249,24 @@ export default {
   methods: {
     viewreport() {
       window.location.href = "http://wxxnb.com/smartdemo/index.html";
+    },
+    getInfor() {
+      this.$axios
+        .post(
+          "/apife/api/getuserinfor",
+          qs.stringify({ token: localStorage.token }),
+          {}
+        )
+        .then(res => {
+          if (res.data.error_num == 1) {
+            this.$message.error("获取失败：" + res.data.msg);
+            return;
+          }
+          this.base.name = res.data.name;
+        })
+        .catch(error => {
+          this.$message.error("获取失败：服务器连接超时");
+        });
     },
     drawLine() {
       let frequency = echarts.init(document.getElementById("frequency"));
@@ -285,7 +303,6 @@ export default {
           }
         ]
       });
-
       let moneyin = echarts.init(document.getElementById("moneyin"));
       moneyin.setOption({
         title: {
@@ -367,7 +384,6 @@ export default {
           }
         ]
       });
-
       let canteenmoney = echarts.init(document.getElementById("canteenmoney"));
       canteenmoney.setOption({
         title: {
@@ -553,6 +569,7 @@ export default {
     }
   },
   mounted() {
+    this.getInfor();
     this.drawLine();
   }
 };

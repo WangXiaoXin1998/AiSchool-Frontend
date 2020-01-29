@@ -9,6 +9,7 @@ import poormonitor from '@/components/poormonitor'
 import poormanage from '@/components/poormanage'
 import accountmanage from '@/components/accountmanage'
 import consoleconsume from '@/components/consoleconsume'
+import consumemonitor from '@/components/consumemonitor'
 import yearlybill from '@/components/yearlybill'
 import yearlybilldetail from '@/components/yearlybilldetail'
 import consume from '@/components/consume'
@@ -46,6 +47,11 @@ export default new Router({
       path: '/consume',
       name: 'consume',
       component: consume
+    },
+    {
+      path: '/consumemonitor',
+      name: 'consumemonitor',
+      component: consumemonitor
     },
     {
       path: '/poormonitor',

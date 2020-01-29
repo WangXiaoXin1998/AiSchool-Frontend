@@ -48,7 +48,7 @@ Vue.component("Frame", frame);
 Vue.use(qs);
 
 export default {
-  name: "managelist",
+  name: "accountmanage",
   data() {
     return {
       pagetitle: "账号管理",

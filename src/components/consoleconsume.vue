@@ -26,7 +26,7 @@ Vue.component("Frame", frame);
 Vue.use(qs);
 
 export default {
-  name: "managelist",
+  name: "consoleconsume",
   data() {
     return {
       pagetitle: "交易维护",

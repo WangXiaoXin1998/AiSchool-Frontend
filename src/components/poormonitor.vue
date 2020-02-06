@@ -62,6 +62,11 @@
               </template>
             </el-table-column>
             <el-table-column prop="prepersent" label="相似度" sortable></el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button size="mini" type="success" round @click="updateLevel(scope.row)">一键更正</el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </div>
       </el-card>
@@ -166,7 +171,43 @@ export default {
     filterTag(value, row) {
       return row.level === value;
     },
+    updateLevel(row) {
+      this.$axios
+        .post(
+          "/apife/api/updatepoorlevel",
+          qs.stringify({
+            username: row.username,
+            newlevel: row.prelevel,
+            token: localStorage.token
+          }),
+          {}
+        )
+        .then(res => {
+          if (res.data.error_num != 1) {
+            this.$message({
+              message: "更正成功：用户评级已更正",
+              type: "success"
+            });
+            this.getPoor();
+            this.reviseCardVisible = false;
+          } else {
+            this.$message.error("更正失败：" + res.data.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.$message.error("更正失败：服务器连接超时");
+        });
+    },
     async getPoor() {
+      this.tableLoading = true;
+      this.tableData = [];
+      this.tableData1 = [];
+      this.tableData2 = [];
+      this.summary[0].number = 0;
+      this.summary[1].number = 0;
+      this.summary[2].number = 0;
+      this.summary[3].number = 0;
       var resultTable = [];
       await this.$axios
         .post("/apife/api/chpooragain", {})
@@ -194,7 +235,7 @@ export default {
               consume: res.data.list[i].fields.consume,
               level: res.data.list[i].fields.level,
               prelevel: resultTable[i][0],
-              prepersent: resultTable[i][1].toFixed(2).toString()+'%'
+              prepersent: resultTable[i][1].toFixed(2).toString() + "%"
             };
             if (data.level == data.prelevel) {
               this.tableData2.push(data);
@@ -205,7 +246,10 @@ export default {
             }
           }
           this.summary[0].number = res.data.list.length;
-          this.summary[3].number = (100*this.summary[1].number / this.summary[0].number).toFixed(2).toString()+'%';
+          this.summary[3].number =
+            ((100 * this.summary[1].number) / this.summary[0].number)
+              .toFixed(2)
+              .toString() + "%";
           this.tableLoading = false;
         })
         .catch(error => {

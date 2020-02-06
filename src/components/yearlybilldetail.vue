@@ -247,9 +247,6 @@ export default {
     };
   },
   methods: {
-    viewreport() {
-      window.location.href = "http://wxxnb.com/smartdemo/index.html";
-    },
     getInfor() {
       this.$axios
         .post(

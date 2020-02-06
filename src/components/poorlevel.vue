@@ -267,11 +267,11 @@ export default {
           }
           for (var i = 0; i < result.length; i++) {
             if (result[i][0] == "不困难") {
-              this.result[0].persent = result[i][1];
+              this.result[0].persent = result[i][1].toFixed(2);
             } else if (result[i][0] == "一般困难") {
-              this.result[1].persent = result[i][1];
+              this.result[1].persent = result[i][1].toFixed(2);
             } else {
-              this.result[2].persent = result[i][1];
+              this.result[2].persent = result[i][1].toFixed(2);
             }
           }
           this.showResult = true;

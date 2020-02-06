@@ -18,4 +18,19 @@ exports.install = function (Vue, options) {
             return '其它城市'
         }
     };
+    Vue.prototype.translateCityLevel = function (level) {
+        if(level=='一线城市'){
+            return 1
+        } else if(level=='二线城市'){
+            return 2
+        } else if(level=='三线城市'){
+            return 3
+        } else if(level=='四线城市'){
+            return 4
+        } else if(level=='五线城市'){
+            return 5
+        } else{
+            return level
+        }
+    };
 };

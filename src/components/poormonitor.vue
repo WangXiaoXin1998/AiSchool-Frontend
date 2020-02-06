@@ -37,7 +37,6 @@
             <el-table-column
               prop="level"
               label="原评级"
-              width="100"
               :filters="[{ text: '一般困难', value: '一般困难' }, { text: '非常困难', value: '非常困难' }, { text: '不困难', value: '不困难' }]"
               :filter-method="filterTag"
               filter-placement="bottom-end"
@@ -49,7 +48,6 @@
             <el-table-column
               prop="prelevel"
               label="预估评级"
-              width="100"
               :filters="[{ text: '一般困难', value: '一般困难' }, { text: '非常困难', value: '非常困难' }, { text: '不困难', value: '不困难' }]"
               :filter-method="filterTag"
               filter-placement="bottom-end"

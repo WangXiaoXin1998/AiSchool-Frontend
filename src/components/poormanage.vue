@@ -20,6 +20,7 @@
           <el-button
             style="float: right"
             round
+            size="small"
             type="primary"
             @click="addCardVisible=true;resetForm('addCardForm')"
           >添加评级数据</el-button>
@@ -52,10 +53,10 @@
                 <el-tag :type="getTag(scope.row.level)" disable-transitions>{{scope.row.level}}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作" width="150px">
               <template slot-scope="scope">
-                <el-button size="mini" @click="showEdit(scope.row)">编辑</el-button>
-                <el-button size="mini" type="danger" @click="DeletePoor(scope.row)">删除</el-button>
+                <el-button size="mini" round @click="showEdit(scope.row)">编辑</el-button>
+                <el-button size="mini" round type="danger" @click="DeletePoor(scope.row)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>

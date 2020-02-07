@@ -218,31 +218,31 @@ export default {
         name: ""
       },
       frequence: {
-        number: 412
+        number: 371
       },
       consume: {
-        moneysum: 123,
-        moneymax: 123.21,
-        moneymaxmonth: "2019年3月"
+        moneysum: 3493.04,
+        moneymax: 760.95,
+        moneymaxmonth: "2019年12月"
       },
       moneyout: {
-        moneysum: 123,
-        moneymax: 123.21,
-        moneymaxday: "2019年3月"
+        moneysum: 4428,
+        moneymax: 770,
+        moneymaxday: "2019年12月"
       },
       canteen: {
-        favourite: "第二餐厅1楼",
-        number: 100
+        favourite: "第一餐厅2楼",
+        number: 107
       },
       book: {
-        number: 123,
+        number: 14,
         fatype: "文艺图书",
-        fatypenumber: 12,
-        faauthor: "朱自清",
-        faauthornumber: 1
+        fatypenumber: 6,
+        faauthor: "鲁迅",
+        faauthornumber: 5
       },
       treatment: {
-        number: 32
+        number: 12
       }
     };
   },
@@ -296,7 +296,7 @@ export default {
           {
             name: "消费次数",
             type: "line",
-            data: [51, 12, 0, 12, 1, 4, 12, 25, 21, 30, 36, 10]
+            data: [6,13,39,30,18,29,24,23,50,30,37,72]
           }
         ]
       });
@@ -330,7 +330,7 @@ export default {
           {
             name: "消费金额",
             type: "line",
-            data: [200, 0, 600, 503, 800, 300, 0, 0, 338, 400, 400, 390]
+            data: [48.4,30.5,331.3,270.68,161.3,224.15,312.3,292.75,383.3,248.79,428.62,760.95]
           }
         ]
       });
@@ -364,20 +364,7 @@ export default {
           {
             name: "充值金额",
             type: "line",
-            data: [
-              263.35,
-              0,
-              448,
-              396.8,
-              385.1,
-              286,
-              109.2,
-              0,
-              112.9,
-              392.8,
-              157.6,
-              293.53
-            ]
+            data: [200.0,96.0,300.0,300.0,350.0,450.0,300.0,402.0,500.0,260.0,500.0,770.0]
           }
         ]
       });
@@ -405,7 +392,7 @@ export default {
           {
             name: "消费金额",
             type: "bar",
-            data: [5, 20, 36, 10, 10, 20]
+            data: [901.2,995.65,304.4,631.15,258.35,0]
           }
         ]
       });
@@ -431,12 +418,12 @@ export default {
             radius: "60%",
             // center: ['50%', '60%'],
             data: [
-              { value: 335, name: "第一餐厅1楼" },
-              { value: 610, name: "第一餐厅2楼" },
-              { value: 434, name: "第二餐厅1楼" },
-              { value: 135, name: "第二餐厅2楼" },
-              { value: 434, name: "第三餐厅1楼" },
-              { value: 135, name: "第三餐厅2楼" }
+              { value: 91, name: "第一餐厅1楼" },
+              { value: 107, name: "第一餐厅2楼" },
+              { value: 34, name: "第二餐厅1楼" },
+              { value: 51, name: "第二餐厅2楼" },
+              { value: 24, name: "第三餐厅1楼" },
+              { value: 0, name: "第三餐厅2楼" }
             ]
           }
         ]
@@ -471,7 +458,7 @@ export default {
           {
             name: "借阅次数",
             type: "line",
-            data: [51, 12, 0, 12, 1, 4, 12, 25, 21, 30, 36, 10]
+            data: [3,0,0,2,1,1,0,0,0,4,2,2]
           }
         ]
       });
@@ -522,9 +509,9 @@ export default {
             radius: "60%",
             // center: ['50%', '60%'],
             data: [
-              { value: 335, name: "文艺图书" },
-              { value: 610, name: "历史图书" },
-              { value: 434, name: "外文图书" }
+              { value: 6, name: "文艺图书" },
+              { value: 2, name: "历史图书" },
+              { value: 4, name: "外文图书" }
             ]
           }
         ]
@@ -559,7 +546,7 @@ export default {
           {
             name: "就诊次数",
             type: "bar",
-            data: [0, 0, 0, 1, 0, 2, 0, 1, 1, 1, 0, 0]
+            data: [1, 0, 0, 2, 1, 0, 0, 0, 0, 6, 2, 0]
           }
         ]
       });

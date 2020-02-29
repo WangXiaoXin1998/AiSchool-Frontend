@@ -24,6 +24,11 @@
           <br />
           <i class="el-icon-s-shop"></i>
           &ensp;所属组织：{{user.org}}
+          <br />
+          <br />
+          <i class="el-icon-phone"></i>
+          &ensp;手机号码：{{user.phone}}
+          <el-button @click="openRevise()" type="text">{{user.phone?'修改':'绑定'}}</el-button>
         </el-col>
       </el-row>
     </Frame>
@@ -47,7 +52,8 @@ export default {
         username: "",
         org: "",
         role: "",
-        name: ""
+        name: "",
+        phone: "",
       }
     };
   },
@@ -79,11 +85,41 @@ export default {
           this.user.username = localStorage.username;
           this.user.org = res.data.org;
           this.user.name = res.data.name;
+          this.user.phone = res.data.phone;
           this.user.role = res.data.role;
         })
         .catch(error => {
           this.$message.error("获取失败：服务器连接超时");
         });
+    },
+    openRevise() {
+      this.$prompt("用于接收异常操作短信提醒", "请输入手机号码", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /^1[3456789]\d{9}$/,
+        inputErrorMessage: "手机号格式不正确"
+      }).then(({ value }) => {
+        this.$axios
+          .post(
+            "/apife/api/changephone",
+            qs.stringify({ token: localStorage.token, phone: value }),
+            {}
+          )
+          .then(res => {
+            if (res.data.error_num == 1) {
+              this.$message.error("修改失败：" + res.data.msg);
+              return;
+            }
+            this.$message({
+              type: "success",
+              message: "修改成功：手机号更新为" + value
+            });
+            this.user.phone = value;
+          })
+          .catch(error => {
+            this.$message.error("修改失败：服务器连接超时");
+          });
+      });
     }
   },
   mounted() {

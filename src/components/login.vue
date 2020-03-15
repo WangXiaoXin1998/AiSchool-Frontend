@@ -57,7 +57,11 @@
           </el-form-item>-->
         </el-form>
         <center>
-          <el-button type="primary" @click="submitForm('loginform')" :loading="logining">{{logining?'登录中':'登录'}}</el-button>
+          <el-button
+            type="primary"
+            @click="submitForm('loginform')"
+            :loading="logining"
+          >{{logining?'登录中':'登录'}}</el-button>
           <el-button v-if="!logining" @click="resetForm('loginform')">重置</el-button>
         </center>
       </el-card>

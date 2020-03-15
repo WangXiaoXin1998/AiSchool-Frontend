@@ -41,15 +41,17 @@
             label-width="140px"
             class="demo-ruleForm"
           >
+            <br />
+            <br />
             <el-form-item label="用户名" size="medium" prop="username">
               <el-input v-model="pwdform0.username" placeholder="请输入用户名" class="input"></el-input>
             </el-form-item>
-            <el-form-item label="类型" prop="character">
+            <!-- <el-form-item label="类型" prop="character">
               <el-radio-group v-model="pwdform0.character" class="chooseType">
                 <el-radio label="用户"></el-radio>
                 <el-radio label="管理员"></el-radio>
               </el-radio-group>
-            </el-form-item>
+            </el-form-item>-->
           </el-form>
         </div>
 
@@ -190,11 +192,6 @@ export default {
   },
   methods: {
     submit(formName) {
-      if (this.step == 2) {
-        setTimeout(() => {
-          this.relogin();
-        }, 3000);
-      }
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.step == 0) {
@@ -203,19 +200,18 @@ export default {
             };
             this.$axios
               .post(
-                "/apife/user/forget_get_question.do",
+                "/apife/api/forget_question_getQue",
                 qs.stringify(pwdform),
                 {}
               )
               .then(res => {
-                if (res.data.status == 1) {
+                if (res.data.error_num == 1) {
                   this.$message.error("验证失败：" + res.data.msg);
                   return;
                 }
-                var question = res.data.msg.split("#");
-                this.pwdform1.question1 = question[0];
-                this.pwdform1.question2 = question[1];
-                this.pwdform1.question3 = question[2];
+                this.pwdform1.question1 = res.data.question1;
+                this.pwdform1.question2 = res.data.question2;
+                this.pwdform1.question3 = res.data.question3;
                 this.step = this.step + 1;
               })
               .catch(error => {
@@ -225,32 +221,22 @@ export default {
           } else if (this.step == 1) {
             var pwdform = {
               username: this.pwdform0.username,
-              question:
-                this.pwdform1.question1 +
-                "#" +
-                this.pwdform1.question2 +
-                "#" +
-                this.pwdform1.question3,
-              answer:
-                this.pwdform1.answer1 +
-                "#" +
-                this.pwdform1.answer2 +
-                "#" +
-                this.pwdform1.answer3
+              answer1: this.pwdform1.answer1,
+              answer2: this.pwdform1.answer2,
+              answer3: this.pwdform1.answer3
             };
             this.$axios
               .post(
-                "/apife/user/forget_check_answer.do",
+                "/apife/api/forget_question_checkAns",
                 qs.stringify(pwdform),
                 {}
               )
               .then(res => {
-                if (res.data.status == 1) {
+                if (res.data.error_num == 1) {
                   this.$message.error("验证失败：" + res.data.msg);
                   return;
                 }
-                console.log(res);
-                this.pwdform2.token = res.data.msg;
+                this.pwdform2.token = res.data.token;
                 this.step = this.step + 1;
               })
               .catch(error => {
@@ -259,22 +245,24 @@ export default {
               });
           } else if (this.step == 2) {
             var pwdform = {
-              username: this.pwdform0.username,
-              forgetToken: this.pwdform2.token,
-              passwordNew: this.pwdform2.agapwd
+              token: this.pwdform2.token,
+              password: this.pwdform2.agapwd
             };
             this.$axios
               .post(
-                "/apife/user/forget_reset_password.do",
+                "/apife/api/forget_question_resetPwd",
                 qs.stringify(pwdform),
                 {}
               )
               .then(res => {
-                if (res.data.status == 1) {
+                if (res.data.error_num == 1) {
                   this.$message.error("重置失败：" + res.data.msg);
                   return;
                 }
                 this.step = this.step + 1;
+                setTimeout(() => {
+                  this.relogin();
+                }, 3000);
               })
               .catch(error => {
                 this.$message.error("重置失败：服务器连接超时");

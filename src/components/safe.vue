@@ -101,6 +101,7 @@
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="删除密保问题" name="resetQUE" v-if="checkQueSign">
+          <br/>
           <el-form
             :model="answerForm"
             status-icon
@@ -130,6 +131,7 @@
                 class="input"
               ></el-input>
             </el-form-item>
+            <br/>
             <el-form-item>
               <el-button type="primary" @click="onDelque('answerForm')">确认删除</el-button>
               <el-button @click="resetForm('answerForm')">重置</el-button>
@@ -278,27 +280,27 @@ export default {
         if (valid) {
           this.$axios
             .post(
-              "/api/user/del_question.do",
+              "/apife/api/del_question",
               qs.stringify({
-                answer:
-                  this.answerForm.answer1 +
-                  "#" +
-                  this.answerForm.answer2 +
-                  "#" +
-                  this.answerForm.answer3,
+                answer1: this.answerForm.answer1,
+                answer2: this.answerForm.answer2,
+                answer3: this.answerForm.answer3,
                 token: localStorage.token
               }),
               {}
             )
             .then(res => {
-              if (res.data.status == 1) {
+              if (res.data.error_num == 1) {
                 this.$message.error("删除失败：" + res.data.msg);
                 return;
               } else {
                 this.$message({
-                  message: "删除成功：当前账号无密保问题",
+                  message: "删除成功：密保删除请注意密码安全",
                   type: "success"
                 });
+                this.resetForm(formName)
+                this.checkQue();
+                this.activeName = "revisePWD"
               }
             })
             .catch(error => {
@@ -312,26 +314,20 @@ export default {
         if (valid) {
           this.$axios
             .post(
-              "/api/user/set_question.do",
+              "/apife/api/set_question",
               qs.stringify({
-                question:
-                  this.newQAForm.question1 +
-                  "#" +
-                  this.newQAForm.question2 +
-                  "#" +
-                  this.newQAForm.question3,
-                answer:
-                  this.newQAForm.answer1 +
-                  "#" +
-                  this.newQAForm.answer2 +
-                  "#" +
-                  this.newQAForm.answer3,
+                question1: this.newQAForm.question1,
+                question2: this.newQAForm.question2,
+                question3: this.newQAForm.question3,
+                answer1: this.newQAForm.answer1,
+                answer2: this.newQAForm.answer2,
+                answer3: this.newQAForm.answer3,
                 token: localStorage.token
               }),
               {}
             )
             .then(res => {
-              if (res.data.status == 1) {
+              if (res.data.error_num == 1) {
                 this.$message.error("设置失败：" + res.data.msg);
                 return;
               } else {
@@ -339,6 +335,9 @@ export default {
                   message: "设置成功：请牢记密保问题",
                   type: "success"
                 });
+                this.resetForm(formName)
+                this.checkQue();
+                this.activeName = "revisePWD"
               }
             })
             .catch(error => {
@@ -350,31 +349,35 @@ export default {
     checkQue() {
       this.$axios
         .post(
-          "/api/user/check_question.do",
+          "/apife/api/check_question",
           qs.stringify({
             token: localStorage.token
           }),
           {}
         )
         .then(res => {
-          if (res.data.status == 1) {
+          if (res.data.error_num == 1) {
             this.$message.error("获取失败：" + res.data.msg);
             return;
           } else {
-            this.$message({
-              message: "获取成功：请牢记密保问题",
-              type: "success"
-            });
+            if (res.data.haveQue == 1) {
+              this.checkQueSign = true;
+              this.questionForm.question1 = res.data.question1;
+              this.questionForm.question2 = res.data.question2;
+              this.questionForm.question3 = res.data.question3;
+            } else {
+              this.checkQueSign = false;
+            }
           }
         })
         .catch(error => {
           this.$message.error("获取失败：服务器连接超时");
         });
-    },
+    }
   },
   mounted() {
+    this.checkQue();
     this.username = localStorage.username;
-    // this.checkQue();
   }
 };
 </script>

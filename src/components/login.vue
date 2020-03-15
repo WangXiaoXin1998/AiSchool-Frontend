@@ -57,8 +57,8 @@
           </el-form-item>-->
         </el-form>
         <center>
-          <el-button type="primary" @click="submitForm('loginform')">登录</el-button>
-          <el-button @click="resetForm('loginform')">重置</el-button>
+          <el-button type="primary" @click="submitForm('loginform')" :loading="logining">{{logining?'登录中':'登录'}}</el-button>
+          <el-button v-if="!logining" @click="resetForm('loginform')">重置</el-button>
         </center>
       </el-card>
     </div>
@@ -87,13 +87,15 @@ export default {
         ],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
         character: [{ required: true, message: "请选择角色", trigger: "blur" }]
-      }
+      },
+      logining: false
     };
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          this.logining = true;
           var loginform = {
             username: this.loginform.username,
             password: this.loginform.password
@@ -103,6 +105,7 @@ export default {
             .then(res => {
               if (res.data.error_num == 1) {
                 this.$message.error("登录失败：" + res.data.msg);
+                this.logining = false;
                 return;
               }
               localStorage.clear();
@@ -113,6 +116,7 @@ export default {
             })
             .catch(error => {
               this.$message.error("登录失败：服务器连接超时");
+              this.logining = false;
             });
         }
       });

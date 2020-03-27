@@ -5,8 +5,8 @@
 # Demo
 
 > http://114.116.242.185:8888/#/index
-UserAcc:1751119   UserPwd:user123
-AdminAcc:1000     UserPwd:admin123
+>UserAcc:1751119   UserPwd:user123
+>AdminAcc:1000     AdminPwd:admin123
 
 ## Build Setup
 

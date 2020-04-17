@@ -206,12 +206,19 @@ export default {
     },
     async getPoor() {
       await this.$axios
-        .get("/apife/api/getpoor", {})
+        .post(
+          "/apife/api/getpoor",
+          qs.stringify({
+            token: localStorage.token
+          }),
+          {}
+        )
         .then(res => {
-          // this.$message({
-          //   message: "获取成功：已获取最近的消费记录",
-          //   type: "success"
-          // });
+          if (res.data.error_num == 1) {
+            this.$message.error("获取失败：" + res.data.msg);
+            this.toLogin();
+            return;
+          }
           this.tableData = [];
           for (var i = 0; i < res.data.list.length; i++) {
             this.tableData.push({
@@ -255,10 +262,17 @@ export default {
         this.$message.warning("评级失败：请将属性填写完成");
         return;
       }
-      var check = [];
-      check.push(this.formInline);
+      var check = this.formInline;
+      // check.push(this.formInline);
       await this.$axios
-        .get("apife/api/checkpoor", { params: { check: check } }, {})
+        .post(
+          "apife/api/checkpoor",
+          qs.stringify({
+            token: localStorage.token,
+            check: JSON.stringify(check)
+          }),
+          {}
+        )
         .then(res => {
           var result = res.data.result[0];
           this.resultLevel = result[0][0];

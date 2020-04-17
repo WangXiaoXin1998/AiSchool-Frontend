@@ -94,6 +94,11 @@ export default {
           {}
         )
         .then(res => {
+          if (res.data.error_num == 1) {
+            this.$message.error("获取失败：" + res.data.msg);
+            this.toLogin();
+            return;
+          }
           this.tableData = [];
           for (var i = 0; i < res.data.userlist.length; i++) {
             this.tableData.push({

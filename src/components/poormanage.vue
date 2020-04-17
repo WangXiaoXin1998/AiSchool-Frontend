@@ -323,8 +323,19 @@ export default {
     },
     async getPoor() {
       await this.$axios
-        .get("/apife/api/getpoor", {})
+        .post(
+          "/apife/api/getpoor",
+          qs.stringify({
+            token: localStorage.token
+          }),
+          {}
+        )
         .then(res => {
+          if (res.data.error_num == 1) {
+            this.$message.error("获取失败：" + res.data.msg);
+            this.toLogin();
+            return;
+          }
           this.tableData = [];
           this.summary[1].number = 0;
           this.summary[2].number = 0;
@@ -358,26 +369,26 @@ export default {
           this.$message.error("获取失败：服务器连接超时");
         });
     },
-    showEdit(row){
+    showEdit(row) {
       this.reviseCardVisible = true;
       this.addCardForm.username = row.username;
-      this.addCardForm.sex = row.sex=="男"?"1":"0";
-      this.addCardForm.gr = row.gr=="是"?"1":"0";
-      this.addCardForm.ls = row.ls=="是"?"1":"0";
-      this.addCardForm.dq = row.dq=="是"?"1":"0";
-      this.addCardForm.card = row.card=="是"?"1":"0";
+      this.addCardForm.sex = row.sex == "男" ? "1" : "0";
+      this.addCardForm.gr = row.gr == "是" ? "1" : "0";
+      this.addCardForm.ls = row.ls == "是" ? "1" : "0";
+      this.addCardForm.dq = row.dq == "是" ? "1" : "0";
+      this.addCardForm.card = row.card == "是" ? "1" : "0";
       this.addCardForm.consume = row.consume;
       this.addCardForm.income = row.income;
       this.addCardForm.city = row.city;
       this.addCardForm.level = row.level;
-      console.log(this.addCardForm)
+      console.log(this.addCardForm);
     },
     EditPoor(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           var reviseForm = this.addCardForm;
-          reviseForm.city = this.translateCityLevel(reviseForm.city)
-          console.log(reviseForm)
+          reviseForm.city = this.translateCityLevel(reviseForm.city);
+          console.log(reviseForm);
           this.$axios
             .post(
               "/apife/api/updatepoordata",
@@ -478,22 +489,6 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    prePoor() {
-      var check = [];
-      check.push(this.formInline);
-      console.log(check);
-      this.$axios
-        .get("apife/api/checkpoor", { params: { check: check } }, {})
-        .then(res => {
-          this.result = res.data.result[0];
-          console.log(this.result);
-          this.showResult = true;
-        })
-        .catch(error => {
-          console.log(error);
-          this.$message.error("评级失败：服务器连接超时");
-        });
-    }
   },
   mounted() {
     this.getPoor();

@@ -208,8 +208,19 @@ export default {
       this.summary[3].number = 0;
       var resultTable = [];
       await this.$axios
-        .post("/apife/api/chpooragain", {})
+        .post(
+          "/apife/api/chpooragain",
+          qs.stringify({
+            token: localStorage.token
+          }),
+          {}
+        )
         .then(res => {
+          if (res.data.error_num == 1) {
+            this.$message.error("获取失败：" + res.data.msg);
+            this.toLogin();
+            return;
+          }
           resultTable = res.data.result;
         })
         .catch(error => {
@@ -217,8 +228,19 @@ export default {
           this.$message.error("获取失败：服务器连接超时");
         });
       await this.$axios
-        .get("/apife/api/getpoor", {})
+        .post(
+          "/apife/api/getpoor",
+          qs.stringify({
+            token: localStorage.token
+          }),
+          {}
+        )
         .then(res => {
+          if (res.data.error_num == 1) {
+            this.$message.error("获取失败：" + res.data.msg);
+            this.toLogin();
+            return;
+          }
           this.tableData = [];
           for (var i = 0; i < res.data.list.length; i++) {
             var data = {

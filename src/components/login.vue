@@ -47,14 +47,6 @@
               show-password
             ></el-input>
           </el-form-item>
-          <!-- <el-form-item label="类型" prop="character">
-            <center>
-              <el-radio-group v-model="loginform.character" class="chooseType">
-                <el-radio label="用户"></el-radio>
-                <el-radio label="管理员"></el-radio>
-              </el-radio-group>
-            </center>
-          </el-form-item>-->
         </el-form>
         <center>
           <el-button
@@ -83,7 +75,6 @@ export default {
       loginform: {
         username: "",
         password: ""
-        // character: "用户"
       },
       rules: {
         username: [
@@ -135,7 +126,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .background {
   z-index: -1;

@@ -46,12 +46,6 @@
             <el-form-item label="用户名" size="medium" prop="username">
               <el-input v-model="pwdform0.username" placeholder="请输入用户名" class="input"></el-input>
             </el-form-item>
-            <!-- <el-form-item label="类型" prop="character">
-              <el-radio-group v-model="pwdform0.character" class="chooseType">
-                <el-radio label="用户"></el-radio>
-                <el-radio label="管理员"></el-radio>
-              </el-radio-group>
-            </el-form-item>-->
           </el-form>
         </div>
 
@@ -282,7 +276,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .background {
   z-index: -1;

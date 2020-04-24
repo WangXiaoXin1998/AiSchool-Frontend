@@ -16,7 +16,7 @@
           <b>{{pagetitle}}</b>
         </div>
         <nobr style="float:right;margin-top:-60px">
-          <el-button plain @click="exit" size="small">退出登陆</el-button>
+          <el-button plain @click="exit" size="small">退出登录</el-button>
         </nobr>
       </el-header>
       <el-container>

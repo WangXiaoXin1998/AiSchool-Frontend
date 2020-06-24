@@ -86,12 +86,12 @@ export default {
         {
           name: "当月消费总额",
           content: 0,
-          remark: 0,
+          remark: 0
         },
         {
           name: "猜你喜欢吃",
           content: "/",
-          remark: 0,
+          remark: 0
         }
       ],
       reindex: 0,
@@ -150,14 +150,15 @@ export default {
         .then(res => {
           this.summary[0].content = "¥ " + res.data.totalmoney.toFixed(2);
           this.summary[0].remark = res.data.totalnumber;
-          for (var re of res.data.predictResult) {
-            this.predictResult.push({ food: re[0], username: re[1] });
+          if (res.data.predictResult) {
+            for (var re of res.data.predictResult) {
+              this.predictResult.push({ food: re[0], username: re[1] });
+            }
+            if (this.predictResult.length > 0) {
+              this.summary[1].remark = this.predictResult[0].username;
+              this.summary[1].content = this.predictResult[0].food;
+            }
           }
-          if (this.predictResult.length > 0) {
-            this.summary[1].remark = this.predictResult[0].username;
-            this.summary[1].content = this.predictResult[0].food;
-          }
-          console.log(this.predictResult);
         })
         .catch(error => {
           console.log(error);

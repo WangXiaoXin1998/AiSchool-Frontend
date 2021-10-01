@@ -213,7 +213,7 @@ export default {
     return {
       pagetitle: "年度账单",
       base: {
-        year: 2019,
+        year: 2020,
         number: localStorage.username,
         name: ""
       },
@@ -223,12 +223,12 @@ export default {
       consume: {
         moneysum: 3493.04,
         moneymax: 760.95,
-        moneymaxmonth: "2019年12月"
+        moneymaxmonth: "2020年12月"
       },
       moneyout: {
         moneysum: 4428,
         moneymax: 770,
-        moneymaxday: "2019年12月"
+        moneymaxday: "2020年12月"
       },
       canteen: {
         favourite: "第一餐厅2楼",
